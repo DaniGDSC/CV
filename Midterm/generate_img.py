@@ -196,77 +196,16 @@ class NoiseDataset:
         
         return self.dataset
 
-
-class DatasetVisualizer:
-    """Class to visualize noisy image datasets."""
-    
-    @staticmethod
-    def visualize_noisy_images(noisy_images: Dict[str, Dict[str, np.ndarray]], 
-                              output_dir: Optional[str] = None) -> None:
-        """
-        Visualize original and noisy images side by side.
-        
-        Args:
-            noisy_images: Dictionary with image names and their noisy variants
-            output_dir: Directory to save visualization images (optional)
-        """
-        if output_dir and not os.path.exists(output_dir):
-            os.makedirs(output_dir)
-            
-        for img_name, img_dict in noisy_images.items():
-            plt.figure(figsize=(15, 10))
-            plt.suptitle(f"Noise Types for {img_name}", fontsize=16)
-            
-            plt.subplot(2, 3, 1)
-            plt.title("Original")
-            plt.imshow(img_dict['original'])
-            plt.axis('off')
-            
-            plt.subplot(2, 3, 2)
-            plt.title("Gaussian Noise")
-            plt.imshow(img_dict['gaussian'])
-            plt.axis('off')
-            
-            plt.subplot(2, 3, 3)
-            plt.title("Salt & Pepper Noise")
-            plt.imshow(img_dict['salt_pepper'])
-            plt.axis('off')
-            
-            plt.subplot(2, 3, 4)
-            plt.title("Speckle Noise")
-            plt.imshow(img_dict['speckle'])
-            plt.axis('off')
-            
-            plt.subplot(2, 3, 5)
-            plt.title("Poisson Noise")
-            plt.imshow(img_dict['poisson'])
-            plt.axis('off')
-            
-            plt.tight_layout()
-            
-            if output_dir:
-                save_path = os.path.join(output_dir, f"noise_comparison_{img_name}.png")
-                plt.savefig(save_path, dpi=300)
-                print(f"Saved comparison image to {save_path}")
-            
-            plt.show()
-
-
 def main():
     """Main function to demonstrate usage."""
     # Example usage with actual image paths (modify as needed)
     image_paths = [
-        'data/input/1.jpg'
+        'data/input/1/original.png'
     ]
     
     # Create dataset with separate image saving
     dataset_creator = NoiseDataset(image_paths, output_dir="data/input")
     noisy_dataset = dataset_creator.create_dataset(save_images=True)
-    
-    # Visualize results
-    visualizer = DatasetVisualizer()
-    visualizer.visualize_noisy_images(noisy_dataset, output_dir="output_visualizations")
-
 
 if __name__ == "__main__":
     main()
